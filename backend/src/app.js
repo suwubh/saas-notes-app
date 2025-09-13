@@ -8,7 +8,6 @@ const authRoutes = require('./routes/auth');
 const notesRoutes = require('./routes/notes');
 const tenantsRoutes = require('./routes/tenants');
 const usersRoutes = require('./routes/users');
-
 const { AppError } = require('./utils/errors');
 
 const app = express();
@@ -49,6 +48,7 @@ app.get('/', (req, res) => {
       health: '/health',
       auth: {
         login: 'POST /auth/login',
+        signup: 'POST /auth/signup',
         me: 'GET /auth/me'
       },
       notes: {
@@ -61,6 +61,9 @@ app.get('/', (req, res) => {
       tenants: {
         upgrade: 'POST /tenants/:slug/upgrade',
         stats: 'GET /tenants/:slug/stats'
+      },
+      users: {
+        invite: 'POST /users/invite'
       }
     },
     test_accounts: [
@@ -68,7 +71,8 @@ app.get('/', (req, res) => {
       'user@acme.test (Member, Acme)',
       'admin@globex.test (Admin, Globex)',
       'user@globex.test (Member, Globex)'
-    ]
+    ],
+    note: 'All test accounts use password: "password"'
   });
 });
 
@@ -121,7 +125,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.use(/.*/, (req, res) => {
+app.use('*', (req, res) => {
   res.status(404).json({ 
     success: false,
     error: 'Route not found',
