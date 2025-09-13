@@ -17,7 +17,7 @@ app.use(helmet());
 
 app.use(cors({
   origin: [
-    'https://saas-notes-5wr88qjoi-subhankar-satpathys-projects.vercel.app',
+    'https://saas-notes-app-frontend.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
     /\.vercel\.app$/
