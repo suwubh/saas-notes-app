@@ -39,7 +39,6 @@ clone repo
 git clone https://github.com/your-user/saas-notes-app.git
 cd saas-notes-app
 
-text
 
 ### Backend
 cd backend
@@ -48,7 +47,6 @@ npm install
 npm run seed # seeds Acme + Globex tenants & users
 npm run dev # http://localhost:3001
 
-text
 
 ### Frontend
 cd ../frontend
@@ -56,7 +54,6 @@ echo "REACT_APP_API_URL=http://localhost:3001" > .env
 npm install
 npm start # http://localhost:3000
 
-text
 
 ---
 
@@ -100,5 +97,3 @@ Vercel’s GitHub integration auto-builds and redeploys on every push.
 
 ---
 
-## 📜 License
-MIT © 2025 SaaS Notes
