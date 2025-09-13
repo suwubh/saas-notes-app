@@ -9,10 +9,15 @@ const Tenant = require('../models/Tenant');
 const router = express.Router();
 
 router.post('/signup', handleAsync(async (req, res) => {
-  const { email, password, tenantSlug = 'acme' } = req.body;
-  
-  if (!email || !password) {
-    throw new ValidationError('Email and password are required');
+  const { email, password, tenantSlug } = req.body;
+
+  if (!email || !password || !tenantSlug) {
+    throw new ValidationError('Email, password and tenant are required');
+  }
+
+  const allowedTenants = ['acme', 'globex'];
+  if (!allowedTenants.includes(tenantSlug.toLowerCase())) {
+    throw new ValidationError('Invalid tenant selected');
   }
 
   const existingUser = await User.findByEmail(email);
@@ -38,7 +43,13 @@ router.post('/signup', handleAsync(async (req, res) => {
     user: {
       id: user.id,
       email: user.email,
-      role: user.role
+      role: user.role,
+      tenant: {
+        id: tenant.id,
+        name: tenant.name,
+        slug: tenant.slug,
+        subscription_plan: 'free'
+      }
     }
   });
 }));
