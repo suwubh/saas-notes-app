@@ -99,6 +99,24 @@ const LoginPage: React.FC = () => {
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
+
+      <div style={{ textAlign: 'center', margin: '16px 0' }}>
+      <span>Don't have an account? </span>
+     <button
+    type="button"
+    onClick={() => window.location.href = '/signup'}
+    style={{
+      background: 'none',
+      border: 'none',
+      color: '#007bff',
+      textDecoration: 'underline',
+      cursor: 'pointer'
+      }}
+      >
+     Sign up here
+    </button>
+  </div>
+
       
       <div style={{ marginTop: 20 }}>
         <h4>Test Accounts (password: password)</h4>
