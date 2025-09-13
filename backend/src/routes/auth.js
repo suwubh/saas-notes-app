@@ -8,6 +8,41 @@ const Tenant = require('../models/Tenant');
 
 const router = express.Router();
 
+router.post('/signup', handleAsync(async (req, res) => {
+  const { email, password, tenantSlug = 'acme' } = req.body;
+  
+  if (!email || !password) {
+    throw new ValidationError('Email and password are required');
+  }
+
+  const existingUser = await User.findByEmail(email);
+  if (existingUser) {
+    throw new ConflictError('User already exists');
+  }
+
+  const tenant = await Tenant.findBySlug(tenantSlug);
+  if (!tenant) {
+    throw new NotFoundError('Tenant not found');
+  }
+
+  const user = await User.create({
+    tenantId: tenant.id,
+    email,
+    password,
+    role: 'member'
+  });
+
+  res.status(201).json({
+    success: true,
+    message: 'User created successfully',
+    user: {
+      id: user.id,
+      email: user.email,
+      role: user.role
+    }
+  });
+}));
+
 router.post('/login', validateLogin, handleAsync(async (req, res) => {
   const { email, password } = req.body;
 
