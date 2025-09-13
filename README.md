@@ -29,11 +29,10 @@ This repository contains two top-level projects: `backend` (Express + PostgreSQL
 
 | Service   | URL |
 |-----------|-----|
-| Frontend  | `https://YOUR-FRONTEND.vercel.app` |
-| Backend   | `https://YOUR-BACKEND.vercel.app` |
-| Health    | `https://YOUR-BACKEND.vercel.app/health` → `{"status":"ok"}` |
+| Frontend  | `https://saas-notes-app-frontend.vercel.app` |
+| Backend   | `https://saas-notes-app-backend.vercel.app` |
+| Health    | `https://saas-notes-app-backend.vercel.app/health` → `{"status":"ok"}` |
 
-> Replace `YOUR-FRONTEND` / `YOUR-BACKEND` with your Vercel project names.
 
 ---
 
@@ -92,12 +91,13 @@ npm install
 npm start # http://localhost:3000
 ```
 
-**Project structure (high-level)**
+**Project structure**
 
 ```text
 / (repo root)
 ├─ backend/       # Express server, database migrations & seeds
 ├─ frontend/      # React + TypeScript app
+├─ .gitignore/
 └─ README.md      # this file
 ```
 
@@ -189,21 +189,3 @@ REACT_APP_API_URL=https://YOUR-BACKEND.vercel.app
 Vercel's GitHub integration will build and deploy on each push to your selected branch.
 
 ---
-
-## ✅ Developer tips
-
-- Use `NODE_ENV=development` locally; set `NODE_ENV=production` on Vercel.
-- Use a secure `JWT_SECRET` (random 32+ char string) in production.
-- Run linting and formatters prior to committing: `npm run lint` / `npm run format` (if configured).
-
----
-
-## 🔐 Security notes
-
-- Never commit real `.env` files. Keep secrets in Vercel or your chosen secret manager.
-- Passwords in the demo are intentionally weak (`password`) for local testing only. Change them in any public or production environment.
-
----
-
-
-Tell me which of the above you'd like next.
