@@ -1,6 +1,6 @@
 const express = require('express');
 const { generateToken } = require('../utils/jwt');
-const { handleAsync, AuthenticationError, ValidationError } = require('../utils/errors');
+const { handleAsync, AuthenticationError, ValidationError, ConflictError, NotFoundError } = require('../utils/errors');
 const { validateLogin } = require('../middleware/validation');
 const { authenticate } = require('../middleware/auth');
 const User = require('../models/User');

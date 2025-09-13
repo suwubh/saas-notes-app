@@ -10,21 +10,31 @@ const usersRoutes = require('./routes/users');
 const { AppError } = require('./utils/errors');
 const app = express();
 const PORT = process.env.PORT || 3001;
+
 app.use(helmet());
 app.use(cors({
-  origin: [
-    'https://saas-notes-app-frontend.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    /\.vercel\.app$/
-  ],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'https://saas-notes-app-frontend.vercel.app',
+      'http://localhost:3000',
+      'http://localhost:3001'
+    ];
+
+    if (!origin || allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Tenant-Slug']
 }));
+
 app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
@@ -32,6 +42,7 @@ app.get('/health', (req, res) => {
     version: '1.0.0'
   });
 });
+
 app.get('/', (req, res) => {
   res.json({ 
     message: 'SaaS Notes API',
@@ -68,10 +79,12 @@ app.get('/', (req, res) => {
     note: 'All test accounts use password: "password"'
   });
 });
+
 app.use('/auth', authRoutes);
 app.use('/notes', notesRoutes);
 app.use('/tenants', tenantsRoutes);
 app.use('/users', usersRoutes);
+
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   if (err instanceof AppError) {
@@ -109,16 +122,20 @@ app.use((err, req, res, next) => {
     error: 'Internal server error'
   });
 });
-app.use('/:path(.*)', (req, res) => {
+
+// 404 handler (ADD THIS)
+app.use((req, res) => {
   res.status(404).json({ 
     success: false,
     error: 'Route not found',
     requested_path: req.originalUrl 
   });
 });
+
 app.listen(PORT, () => {
   console.log(`SaaS Notes API running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
   console.log(`API docs: http://localhost:${PORT}/`);
 });
+
 module.exports = app;
