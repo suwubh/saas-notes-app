@@ -63,7 +63,7 @@ const DashboardPage: React.FC = () => {
           onClick={logout}
           style={{
             padding: '8px 16px',
-            backgroundColor: '#dc3545',
+            backgroundColor: '#FF6F61',
             color: 'white',
             border: 'none',
             borderRadius: 4,
@@ -154,7 +154,7 @@ const DashboardPage: React.FC = () => {
           disabled={submitting || isAtLimit}
           style={{
             padding: '12px 24px',
-            backgroundColor: isAtLimit ? '#6c757d' : '#007bff',
+            backgroundColor: isAtLimit ? '#6c757d' : '#1A1A40',
             color: 'white',
             border: 'none',
             borderRadius: 4,
@@ -201,7 +201,7 @@ const DashboardPage: React.FC = () => {
                   onClick={() => deleteNote(note.id)}
                   style={{
                     padding: '4px 12px',
-                    backgroundColor: '#dc3545',
+                    backgroundColor: '#FF6F61',
                     color: 'white',
                     border: 'none',
                     borderRadius: 4,

@@ -89,7 +89,7 @@ const LoginPage: React.FC = () => {
           style={{
             width: '100%',
             padding: 12,
-            backgroundColor: '#007bff',
+            backgroundColor: '#1A1A40',
             color: 'white',
             border: 'none',
             borderRadius: 4,
@@ -108,7 +108,7 @@ const LoginPage: React.FC = () => {
     style={{
       background: 'none',
       border: 'none',
-      color: '#007bff',
+      color: '#1A1A40',
       textDecoration: 'underline',
       cursor: 'pointer'
       }}
