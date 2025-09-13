@@ -13,17 +13,6 @@ const PORT = process.env.PORT || 3001;
 app.use(helmet());
 app.use(cors({
   origin: [
-    'https://saas-notes-app-frontend-5uouh7agp-subhankar-satpathys-projects.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    /\.vercel\.app$/
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Tenant-Slug']
-}));
-app.options('*', cors({
-  origin: [
     'https://saas-notes-app-frontend.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
@@ -120,7 +109,7 @@ app.use((err, req, res, next) => {
     error: 'Internal server error'
   });
 });
-app.use('*', (req, res) => {
+app.use('/:path(.*)', (req, res) => {
   res.status(404).json({ 
     success: false,
     error: 'Route not found',
