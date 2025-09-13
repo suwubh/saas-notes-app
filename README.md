@@ -29,9 +29,9 @@ This repository contains two top-level projects: `backend` (Express + PostgreSQL
 
 | Service   | URL |
 |-----------|-----|
-| Frontend  | `https://saas-notes-app-frontend.vercel.app` |
-| Backend   | `https://saas-notes-app-backend.vercel.app` |
-| Health    | `https://saas-notes-app-backend.vercel.app/health` → `{"status":"ok"}` |
+| Frontend  | `[Frontend (vercel)](https://saas-notes-app-frontend.vercel.app)` |
+| Backend   | `[Backend (vercel)](https://saas-notes-app-backend.vercel.app)` |
+| Health    | `[Health check]https://saas-notes-app-backend.vercel.app/health` → `{"status":"ok"}` |
 
 
 ---
