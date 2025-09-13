@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface User {
   id: string;
   email: string;
@@ -13,6 +15,7 @@ export interface User {
 }
 
 export interface Note {
+  author_email: ReactNode;
   id: string;
   title: string;
   content: string;

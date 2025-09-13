@@ -10,6 +10,13 @@ const DashboardPage: React.FC = () => {
   const [content, setContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [upgradeError, setUpgradeError] = useState('');
+  
+  
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteRole, setInviteRole] = useState('member');
+  const [inviteSubmitting, setInviteSubmitting] = useState(false);
+  const [inviteError, setInviteError] = useState('');
+  const [inviteSuccess, setInviteSuccess] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +41,31 @@ const DashboardPage: React.FC = () => {
       window.location.reload();
     } catch (err: any) {
       setUpgradeError(err.response?.data?.error || 'Upgrade failed');
+    }
+  };
+
+  const handleInviteUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setInviteSubmitting(true);
+    setInviteError('');
+    setInviteSuccess('');
+    
+    try {
+      const response = await api.post('/users/invite', {
+        email: inviteEmail,
+        role: inviteRole
+      });
+      
+      setInviteSuccess(`Successfully invited ${inviteEmail} as ${inviteRole}`);
+      setInviteEmail('');
+      setInviteRole('member');
+      
+      
+      setTimeout(() => setInviteSuccess(''), 3000);
+    } catch (err: any) {
+      setInviteError(err.response?.data?.error || 'Failed to invite user');
+    } finally {
+      setInviteSubmitting(false);
     }
   };
 
@@ -73,6 +105,92 @@ const DashboardPage: React.FC = () => {
           Logout
         </button>
       </header>
+
+      {/* Admin Invite Users Section */}
+      {user?.role === 'admin' && (
+        <div style={{
+          padding: 20,
+          border: '1px solid #1A1A40',
+          borderRadius: 4,
+          marginBottom: 30,
+          backgroundColor: '#797988ff',
+          color: 'white'
+        }}>
+          <h3>Admin: Invite New User</h3>
+          <form onSubmit={handleInviteUser}>
+            <div style={{ marginBottom: 16 }}>
+              <input
+                type="email"
+                placeholder="Enter email address"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                required
+                style={{
+                  width: '60%',
+                  padding: 12,
+                  border: '1px solid #ddd',
+                  borderRadius: 4,
+                  marginRight: 8
+                }}
+              />
+              <select
+                value={inviteRole}
+                onChange={(e) => setInviteRole(e.target.value)}
+                style={{
+                  width: '25%',
+                  padding: 12,
+                  border: '1px solid #ddd',
+                  borderRadius: 4,
+                  marginRight: 8
+                }}
+              >
+                <option value="member">Member</option>
+                <option value="admin">Admin</option>
+              </select>
+              <button
+                type="submit"
+                disabled={inviteSubmitting}
+                style={{
+                  padding: '12px 24px',
+                  backgroundColor: inviteSubmitting ? '#6c757d' : '#1A1A40',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 4,
+                  cursor: inviteSubmitting ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {inviteSubmitting ? 'Inviting...' : 'Invite User'}
+              </button>
+            </div>
+            
+            {inviteError && (
+              <div style={{ 
+                color: '#dc3545', 
+                marginBottom: 8,
+                padding: 8,
+                backgroundColor: '#f8d7da',
+                borderRadius: 4,
+                fontSize: 14
+              }}>
+                ❌ {inviteError}
+              </div>
+            )}
+            
+            {inviteSuccess && (
+              <div style={{ 
+                color: '#155724', 
+                marginBottom: 8,
+                padding: 8,
+                backgroundColor: '#d4edda',
+                borderRadius: 4,
+                fontSize: 14
+              }}>
+                ✅ {inviteSuccess}
+              </div>
+            )}
+          </form>
+        </div>
+      )}
 
       {isAtLimit && (
         <div style={{
@@ -166,7 +284,9 @@ const DashboardPage: React.FC = () => {
       </form>
 
       <div>
-        <h3>Your Notes ({notes.length})</h3>
+        <h3>
+          {user?.role === 'admin' ? 'All Tenant Notes' : 'Your Notes'} ({notes.length})
+        </h3>
         
         {loading && <p>Loading notes...</p>}
         {error && <p style={{ color: 'red' }}>Error: {error}</p>}
@@ -186,8 +306,17 @@ const DashboardPage: React.FC = () => {
                 backgroundColor: '#f8f9fa'
               }}
             >
-              <h4>{note.title}</h4>
-              <p>{note.content}</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div style={{ flex: 1 }}>
+                  <h4>{note.title}</h4>
+                  <p>{note.content}</p>
+                  {user?.role === 'admin' && note.author_email && (
+                    <small style={{ color: '#007bff', fontWeight: 'bold' }}>
+                      👤 Author: {note.author_email}
+                    </small>
+                  )}
+                </div>
+              </div>
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
