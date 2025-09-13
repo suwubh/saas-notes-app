@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { getToken, setToken, removeToken } from '../utils/auth';
 import { User } from '../utils/types';
@@ -6,6 +7,7 @@ import { User } from '../utils/types';
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const login = async (email: string, password: string) => {
     const response = await api.post('/auth/login', { email, password });
@@ -16,6 +18,7 @@ export const useAuth = () => {
   const logout = () => {
     removeToken();
     setUser(null);
+    navigate('/login');
   };
 
   useEffect(() => {
