@@ -130,9 +130,9 @@ app.use(/.*/, (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 SaaS Notes API running on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/health`);
-  console.log(`📝 API docs: http://localhost:${PORT}/`);
+  console.log(`SaaS Notes API running on port ${PORT}`);
+  console.log(`Health check: http://localhost:${PORT}/health`);
+  console.log(`API docs: http://localhost:${PORT}/`);
 });
 
 module.exports = app;
