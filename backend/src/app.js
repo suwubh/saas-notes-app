@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 app.use(helmet());
 app.use(cors({
   origin: [
-    'https://saas-notes-app-frontend.vercel.app',
+    'https://saas-notes-app-frontend-5uouh7agp-subhankar-satpathys-projects.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
     /\.vercel\.app$/
